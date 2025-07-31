@@ -66,7 +66,7 @@ class MainViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        o_ID.formatter = HexadecimalFormatter(3)
+        o_ID.formatter = HexadecimalFormatter(8)
         
         o_D0.formatter = HexadecimalFormatter(2)
         o_D1.formatter = HexadecimalFormatter(2)
@@ -249,12 +249,12 @@ extension MainViewController: NSTextFieldDelegate {
             if textField == o_ID {
                 let stringValue = textField.stringValue
                 if let n = Int(stringValue, radix: 16) {
-                    if n > 0x7FF {
-                        let n11 = n & 0x7FF
+                    if n > 0x1FFFFFFF {
+                        let n11 = n & 0x1FFFFFFF
                         let newValue = (textField.formatter?.string(for: n11))!
                         let alert = NSAlert()
                         alert.messageText = "Value is too large!"
-                        alert.informativeText = "\"\(stringValue)\" exceeds 11 bits;  truncating to \"\(newValue).\"  Have a wonderful day."
+                        alert.informativeText = "\"\(stringValue)\" exceeds 29 bits;  truncating to \"\(newValue).\"  Have a wonderful day."
                         alert.beginSheetModal(for: view.window!) { (response) in
                             textField.stringValue = newValue
                             textField.becomeFirstResponder()
